@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
+      "pages/*": ["src/configs/*"],
       "components/*": ["src/components/*"],
       "utils/*": ["src/utils/*"],
       "configs/*": ["src/configs/*"],
     }
   },
+  "sourceMap": true,
   "extends": "@tsconfig/svelte/tsconfig.json",
 
   "include": ["src/**/*"],

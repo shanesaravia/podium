@@ -1,7 +1,9 @@
 import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
+import copy from "rollup-plugin-copy";
 import css from "rollup-plugin-css-only";
 import livereload from "rollup-plugin-livereload";
+import replace from "rollup-plugin-replace";
 import resolve from "@rollup/plugin-node-resolve";
 import svelte from "rollup-plugin-svelte";
 import sveltePreprocess from "svelte-preprocess";
@@ -39,6 +41,7 @@ const aliases = alias({
   resolve: [".svelte", ".js", ".ts"], //optional, by default this will just look for .js files or folders
   entries: [
     { find: "src", replacement: "src" },
+    { find: "pages", replacement: "src/pages" },
     { find: "components", replacement: "src/components" },
     { find: "utils", replacement: "src/utils" },
     { find: "configs", replacement: "src/configs" },
@@ -54,13 +57,38 @@ export default {
     file: "public/build/bundle.js",
   },
   plugins: [
+    replace({ "process.env.NODE_ENV": JSON.stringify("development") }),
+    copy({
+      targets: [
+        {
+          src: "node_modules/bootstrap/dist/css/*",
+          dest: "public/vendor/bootstrap/css",
+        },
+        {
+          src: "node_modules/bootstrap/dist/js/*",
+          dest: "public/vendor/bootstrap/js",
+        },
+      ],
+    }),
     svelte({
-      preprocess: sveltePreprocess({ sourceMap: !production }),
+      preprocess: sveltePreprocess({
+        sourceMap: !production,
+        scss: {
+          prependData: `@import '../scss/theme.scss';`,
+        },
+      }),
       compilerOptions: {
         // enable run-time checks when not in production
         dev: !production,
       },
+      onwarn: (warning, handler) => {
+        const { code, frame } = warning;
+        if (code === "css-unused-selector") return;
+
+        handler(warning);
+      },
     }),
+    // scss(),
     aliases,
     // we'll extract any component CSS out into
     // a separate file - better for performance

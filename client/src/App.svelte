@@ -1,29 +1,28 @@
 <script lang="ts">
 	import Sidebar from 'src/components/Sidebar.svelte'
-	export let name: string;
-	const test = "Shane"
+	import Router from 'src/components/Router.svelte'
+	import * as bootstrap from 'bootstrap'
+	import { onMount } from 'svelte'
+
+    onMount(() => {
+		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+		// @ts-ignore
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })
 </script>
 
 <main>
 	<Sidebar />
-	<h1>Hello {name} {test}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-	<img src="/images/podiumLogo.png" alt="podium-logo" />
+	<Router />
 </main>
 
 <style>
 	main {
-		text-align: center;
-		padding: 1em;
+		display: flex;
+		flex-direction: row;
 		max-width: 240px;
 		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
+		height: 100%;
 	}
 
 	@media (min-width: 640px) {
