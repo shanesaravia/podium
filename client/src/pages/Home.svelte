@@ -1,3 +1,3 @@
 <div>
-    <h1>HOME ROUTE</h1>
+  <h1>HOME ROUTE</h1>
 </div>

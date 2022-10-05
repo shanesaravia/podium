@@ -1,33 +1,34 @@
 <script lang="ts">
-	import Sidebar from 'src/components/Sidebar.svelte'
-	import Router from 'src/components/Router.svelte'
-	import * as bootstrap from 'bootstrap'
-	import { onMount } from 'svelte'
+  import * as bootstrap from 'bootstrap'
+  import { onMount } from 'svelte'
 
-    onMount(() => {
-		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-		// @ts-ignore
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-    })
+  import Router from 'src/components/Router.svelte'
+  import Sidebar from 'src/components/Sidebar.svelte'
+
+  onMount(() => {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    // eslint-disable-next-line
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  })
 </script>
 
 <main>
-	<Sidebar />
-	<Router />
+  <Sidebar />
+  <Router />
 </main>
 
 <style>
-	main {
-		display: flex;
-		flex-direction: row;
-		max-width: 240px;
-		margin: 0 auto;
-		height: 100%;
-	}
+  main {
+    display: flex;
+    flex-direction: row;
+    max-width: 240px;
+    margin: 0 auto;
+    height: 100%;
+  }
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  @media (min-width: 640px) {
+    main {
+      max-width: none;
+    }
+  }
 </style>

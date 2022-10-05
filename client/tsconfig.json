@@ -7,7 +7,9 @@
       "components/*": ["src/components/*"],
       "utils/*": ["src/utils/*"],
       "configs/*": ["src/configs/*"],
-    }
+    },
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
   },
   "sourceMap": true,
   "extends": "@tsconfig/svelte/tsconfig.json",

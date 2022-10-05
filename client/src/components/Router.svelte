@@ -1,14 +1,14 @@
 <script>
-    import { Router, Route, Link } from "svelte-navigator";
-    import Home from 'src/pages/Home.svelte'
+  import { Link, Route, Router } from 'svelte-navigator'
+
+  import Home from 'src/pages/Home.svelte'
 </script>
 
-
 <Router>
-    <Route path="/">
-        <Home />
-    </Route>
-    <!-- <Route path="about" component={About} />
+  <Route path="/">
+    <Home />
+  </Route>
+  <!-- <Route path="about" component={About} />
     <Route path="blog/*">
         <Route path="/">
             <Blog />

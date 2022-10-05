@@ -1,5 +1,5 @@
-const sveltePreprocess = require("svelte-preprocess");
-const production = !process.env.ROLLUP_WATCH;
+const sveltePreprocess = require('svelte-preprocess')
+const production = !process.env.ROLLUP_WATCH
 
 module.exports = {
   preprocess: sveltePreprocess({
@@ -9,9 +9,9 @@ module.exports = {
     },
   }),
   onwarn: (warning, handler) => {
-    const { code, frame } = warning;
-    if (code === "css-unused-selector") return;
+    const { code, frame } = warning
+    if (code === 'css-unused-selector') return
 
-    handler(warning);
+    handler(warning)
   },
-};
+}
