@@ -1,19 +1,42 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "rootDir": ".",
-    "paths": {
-      "pages/*": ["src/configs/*"],
-      "components/*": ["src/components/*"],
-      "utils/*": ["src/utils/*"],
-      "configs/*": ["src/configs/*"],
-    },
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "rootDir": ".",
+
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    // "module": "commonjs",
+    "target": "es2020",
+    "sourceMap": true,
+    "outDir": "build",
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "strictNullChecks": false,
+    "paths": {
+      // "@src/*": ["src/*"]
+    }
   },
   "sourceMap": true,
   "extends": "@tsconfig/svelte/tsconfig.json",
-
   "include": ["src/**/*"],
-  "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".vscode",
+    "docs",
+    "build",
+    "scripts",
+    "config",
+    "e2e",
+    "**/*.test.js",
+    "**/*.test.ts",
+    "__sapper__/*",
+    "public/*"
+  ]
 }

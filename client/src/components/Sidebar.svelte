@@ -72,7 +72,12 @@
       data-bs-title="Overwatch 2<br>(Coming Soon)"
     />
   </div>
-  <div class="person-icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Account">
+  <div
+    class="person-icon-wrapper"
+    data-bs-toggle="tooltip"
+    data-bs-placement="right"
+    data-bs-title="Account"
+  >
     <i class="bi bi-person-fill fa-2x person-icon" />
   </div>
 </div>

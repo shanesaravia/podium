@@ -6,9 +6,13 @@
   import Sidebar from 'src/components/Sidebar.svelte'
 
   onMount(() => {
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    // eslint-disable-next-line
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    const tooltipTriggerList = document.querySelectorAll(
+      '[data-bs-toggle="tooltip"]'
+    )
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const tooltipList = [...tooltipTriggerList].map(
+      tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl)
+    )
   })
 </script>
 

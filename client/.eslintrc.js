@@ -2,8 +2,8 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2020,
-    project: 'tsconfig.json',
-    tsconfigRootDir: __dirname,
+    // project: 'tsconfig.json',
+    // tsconfigRootDir: __dirname,
     sourceType: 'module',
     extraFileExtensions: ['.svelte'],
   },
@@ -18,11 +18,11 @@ module.exports = {
   ],
   settings: {
     'import/resolver': {
-      typescript: {},
-      node: {
-        paths: ['src'],
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.svelte'],
-      },
+      // typescript: {},
+      // node: {
+      //   paths: ['src'],
+      //   extensions: ['.js', '.jsx', '.ts', '.tsx', '.svelte'],
+      // },
       alias: {
         map: [['src', './src']],
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts', '.svelte'],
@@ -42,13 +42,13 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/typescript',
   ],
-  root: true,
-  env: {
-    es6: true,
-    browser: true,
-    node: true,
-    jest: true,
-  },
+  // root: true,
+  // env: {
+  //   es6: true,
+  //   browser: true,
+  //   node: true,
+  //   jest: true,
+  // },
   ignorePatterns: ['public/build/', '.eslintrc.js', 'node_modules', '*.js'],
   rules: {
     'import/order': [

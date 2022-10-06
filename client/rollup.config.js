@@ -77,12 +77,12 @@ export default {
         // enable run-time checks when not in production
         dev: !production,
       },
-      // onwarn: (warning, handler) => {
-      //   const { code, frame } = warning
-      //   if (code === 'css-unused-selector') return
+      onwarn: (warning, handler) => {
+        const { code, frame } = warning
+        if (code === 'css-unused-selector') return
 
-      //   handler(warning)
-      // },
+        handler(warning)
+      },
     }),
     // scss(),
     aliases,
