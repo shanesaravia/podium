@@ -1,24 +1,32 @@
-<div id="sidebar">
+<script lang="ts">
+  import { push } from 'svelte-spa-router'
+
+  import { urls } from 'src/constants'
+</script>
+
+<nav id="sidebar">
   <div>
     <img
-      src="/images/podiumLogo.png"
+      src="/images/icons/podiumLogo.png"
       alt="podium-logo"
       class="home-icon game-icon"
       data-bs-toggle="tooltip"
       data-bs-placement="right"
       data-bs-title="Home"
+      on:click={() => push(urls.home)}
     />
     <div class="divider" />
     <img
-      src="/images/valorant.png"
+      src="/images/icons/valorant.png"
       alt="valorant-logo"
       class="game-icon"
       data-bs-toggle="tooltip"
       data-bs-placement="right"
       data-bs-title="Valorant"
+      on:click={() => push(urls.valorant)}
     />
     <img
-      src="/images/rocketleague.png"
+      src="/images/icons/rocketleague.png"
       alt="rocketleague-logo"
       class="game-icon"
       data-bs-toggle="tooltip"
@@ -27,7 +35,7 @@
       data-bs-title="Rocket League<br>(Coming Soon)"
     />
     <img
-      src="/images/csgo.png"
+      src="/images/icons/csgo.png"
       alt="csgo-logo"
       class="game-icon"
       data-bs-toggle="tooltip"
@@ -36,8 +44,8 @@
       data-bs-title="CS:GO<br>(Coming Soon)"
     />
     <img
-      src="/images/mw2.png"
-      alt="mw2-logo"
+      src="/images/icons/mw2.png"
+      alt="modern-warefare-2-logo"
       class="game-icon"
       data-bs-toggle="tooltip"
       data-bs-placement="right"
@@ -45,8 +53,8 @@
       data-bs-title="Modern Warefare 2<br>(Coming Soon)"
     />
     <img
-      src="/images/r6.png"
-      alt="r6-logo"
+      src="/images/icons/r6.png"
+      alt="rainbow-six-siege-logo"
       class="game-icon"
       data-bs-toggle="tooltip"
       data-bs-placement="right"
@@ -54,8 +62,8 @@
       data-bs-title="Rainbow Six Siege<br>(Coming Soon)"
     />
     <img
-      src="/images/halo.png"
-      alt="halo-logo"
+      src="/images/icons/halo.png"
+      alt="halo-infinite-logo"
       class="game-icon"
       data-bs-toggle="tooltip"
       data-bs-placement="right"
@@ -63,24 +71,43 @@
       data-bs-title="Halo Infinite<br>(Coming Soon)"
     />
     <img
-      src="/images/overwatch2.png"
-      alt="overwatch2-logo"
+      src="/images/icons/overwatch2.png"
+      alt="overwatch-2-logo"
       class="game-icon"
       data-bs-toggle="tooltip"
       data-bs-placement="right"
       data-bs-html="true"
       data-bs-title="Overwatch 2<br>(Coming Soon)"
     />
+    <img
+      src="/images/icons/lol.png"
+      alt="league-of-legends-logo"
+      class="game-icon"
+      data-bs-toggle="tooltip"
+      data-bs-placement="right"
+      data-bs-html="true"
+      data-bs-title="League Of Legends<br>(Coming Soon)"
+    />
+    <img
+      src="/images/icons/fortnite.webp"
+      alt="fortnite-logo"
+      class="game-icon"
+      data-bs-toggle="tooltip"
+      data-bs-placement="right"
+      data-bs-html="true"
+      data-bs-title="Fortnite<br>(Coming Soon)"
+    />
   </div>
   <div
     class="person-icon-wrapper"
     data-bs-toggle="tooltip"
     data-bs-placement="right"
-    data-bs-title="Account"
+    data-bs-title="Profile"
+    on:click={() => push(urls.profile)}
   >
     <i class="bi bi-person-fill fa-2x person-icon" />
   </div>
-</div>
+</nav>
 
 <style lang="scss">
   #sidebar {
@@ -99,7 +126,7 @@
   .game-icon {
     display: flex;
     width: 80px;
-    padding: 20px 10px 20px 10px;
+    padding: 15px 10px;
     justify-content: center;
   }
   .game-icon:hover,

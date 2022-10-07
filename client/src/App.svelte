@@ -1,8 +1,9 @@
 <script lang="ts">
   import * as bootstrap from 'bootstrap'
   import { onMount } from 'svelte'
+  import { Router } from 'svelte-navigator'
 
-  import Router from 'src/components/Router.svelte'
+  import Routes from 'src/components/Routes.svelte'
   import Sidebar from 'src/components/Sidebar.svelte'
 
   onMount(() => {
@@ -17,15 +18,16 @@
 </script>
 
 <main>
-  <Sidebar />
-  <Router />
+  <Router>
+    <Sidebar />
+    <Routes />
+  </Router>
 </main>
 
 <style>
   main {
     display: flex;
     flex-direction: row;
-    max-width: 240px;
     margin: 0 auto;
     height: 100%;
   }

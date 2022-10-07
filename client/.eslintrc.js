@@ -11,9 +11,9 @@ module.exports = {
     {
       files: ['*.svelte'],
       parser: 'svelte-eslint-parser',
-      // parserOptions: {
-      //   parser: '@typescript-eslint/parser',
-      // },
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+      },
     },
   ],
   settings: {
@@ -26,6 +26,7 @@ module.exports = {
       alias: {
         map: [['src', './src']],
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts', '.svelte'],
+        // '@': path.resolve(__dirname, 'src'),
       },
     },
     // 'svelte3/typescript': require('typescript'),

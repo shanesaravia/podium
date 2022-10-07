@@ -83,6 +83,7 @@ export default {
 
         handler(warning)
       },
+      extensions: ['.html', '.svelte'],
     }),
     // scss(),
     aliases,
@@ -98,8 +99,9 @@ export default {
     resolve({
       browser: true,
       dedupe: ['svelte'],
+      preferBuiltins: false // for url npm module; otherwise rollup assumes node
     }),
-    commonjs(),
+    commonjs({include: 'node_modules/**'}),
     typescript({
       sourceMap: !production,
       inlineSources: !production,
