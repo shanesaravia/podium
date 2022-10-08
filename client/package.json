@@ -16,6 +16,7 @@
     "@tsconfig/svelte": "^2.0.0",
     "@types/bootstrap": "^5.2.5",
     "eslint": "^8.24.0",
+    "eslint-plugin-html": "^7.1.0",
     "node-sass": "^7.0.3",
     "postcss": "^8.4.17",
     "rollup": "^2.79.1",

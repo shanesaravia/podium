@@ -35,7 +35,7 @@ module.exports = {
     // 'svelte3/ignore-styles': () => true,
     'svelte3/typescript': true,
   },
-  plugins: ['svelte3', '@typescript-eslint'],
+  plugins: ['svelte3', '@typescript-eslint', 'html'],
   extends: [
     'plugin:svelte/recommended',
     'plugin:@typescript-eslint/recommended',

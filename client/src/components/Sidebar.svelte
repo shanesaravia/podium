@@ -89,7 +89,7 @@
       data-bs-title="League Of Legends<br>(Coming Soon)"
     />
     <img
-      src="/images/icons/fortnite.webp"
+      src="/images/icons/fortnite.png"
       alt="fortnite-logo"
       class="game-icon"
       data-bs-toggle="tooltip"
