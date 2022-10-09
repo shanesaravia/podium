@@ -6,7 +6,7 @@
   "svelteStrictMode": false,
   "svelteBracketNewLine": true,
   "svelteIndentScriptAndStyle": true,
-  "plugins": ["prettier-plugin-svelte"],
+  "jsxBracketSameLine": true,
   "useTabs": false,
   "tabWidth": 2,
   "trailingComma": "es5"

@@ -5,6 +5,7 @@
 
   import Routes from 'src/components/Routes.svelte'
   import Sidebar from 'src/components/Sidebar.svelte'
+  // import 'src/scss/theme.scss'
 
   onMount(() => {
     const tooltipTriggerList = document.querySelectorAll(

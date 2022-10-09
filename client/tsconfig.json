@@ -3,6 +3,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "rootDir": ".",
+    // "rootDir": "src",
 
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -25,6 +26,7 @@
   "sourceMap": true,
   "extends": "@tsconfig/svelte/tsconfig.json",
   "include": ["src/**/*"],
+  // "include": ["src/**/*", "**/*.ts", "node_modules/bootstrap/**/*"],
   "exclude": [
     "node_modules",
     "dist",

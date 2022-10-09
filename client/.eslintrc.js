@@ -35,23 +35,32 @@ module.exports = {
     // 'svelte3/ignore-styles': () => true,
     'svelte3/typescript': true,
   },
-  plugins: ['svelte3', '@typescript-eslint', 'html'],
+  plugins: ['svelte3', '@typescript-eslint', 'html', 'prettier'],
   extends: [
     'plugin:svelte/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'plugin:import/errors',
     'plugin:import/typescript',
+    'prettier'
   ],
   // root: true,
-  // env: {
-  //   es6: true,
-  //   browser: true,
-  //   node: true,
-  //   jest: true,
-  // },
+  env: {
+    es6: true,
+    browser: true,
+    node: true,
+    jest: true,
+  },
   ignorePatterns: ['public/build/', '.eslintrc.js', 'node_modules', '*.js'],
   rules: {
+    "prettier/prettier": [
+      "error",
+      {
+        "svelteBracketNewLine": true,
+        "jsxBracketSameLine": true,
+      },
+      {}
+    ],
     'import/order': [
       'error',
       {
