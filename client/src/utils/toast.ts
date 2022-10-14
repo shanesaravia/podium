@@ -5,7 +5,7 @@ export const successToast = () =>
 
 export const errorToast = () =>
   toast.push('Unable to add user. Please try again later', {
-    classes: ['error']
+    classes: ['error'],
   })
 
 export const duplicateToast = () =>

@@ -58,7 +58,6 @@ module.exports = {
       {
         "svelteBracketNewLine": true,
         "jsxBracketSameLine": true,
-        "trailingComma": "es5",
       },
       {}
     ],
@@ -85,7 +84,7 @@ module.exports = {
       {
         multiline: {
           delimiter: 'none', // 'none' or 'semi' or 'comma'
-          requireLast: false,
+          requireLast: true,
         },
         singleline: {
           delimiter: 'semi', // 'semi' or 'comma'
@@ -93,13 +92,6 @@ module.exports = {
         },
       },
     ],
-  //   "comma-dangle": ["error", {
-  //     "arrays": "all",
-  //     "objects": "all",
-  //     "imports": "never",
-  //     "exports": "all",
-  //     "functions": "all"
-  // }],
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
