@@ -1,0 +1,13 @@
+{
+  "semi": false,
+  "singleQuote": true,
+  "arrowParens": "avoid",
+  "printWidth": 80,
+  "svelteStrictMode": false,
+  "svelteBracketNewLine": true,
+  "svelteIndentScriptAndStyle": true,
+  "jsxBracketSameLine": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "trailingComma": "es5"
+}

@@ -1,14 +1,44 @@
 {
   "compilerOptions": {
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "rootDir": ".",
+    // "rootDir": "src",
+
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    // "module": "commonjs",
+    "target": "es2021",
+    "sourceMap": true,
+    "outDir": "build",
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "baseUrl": ".",
+    "strictNullChecks": false,
     "paths": {
-      "components/*": ["src/components/*"],
-      "utils/*": ["src/utils/*"],
-      "configs/*": ["src/configs/*"],
+      // "@src/*": ["src/*"]
     }
   },
+  "sourceMap": true,
   "extends": "@tsconfig/svelte/tsconfig.json",
-
   "include": ["src/**/*"],
-  "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
+  // "include": ["src/**/*", "**/*.ts", "node_modules/bootstrap/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".vscode",
+    "docs",
+    "build",
+    "scripts",
+    "config",
+    "e2e",
+    "**/*.test.js",
+    "**/*.test.ts",
+    "__sapper__/*",
+    "public/*"
+  ]
 }
