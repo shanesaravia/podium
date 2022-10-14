@@ -1,11 +1,18 @@
 <script lang="ts">
+  import { SvelteToast } from '@zerodevx/svelte-toast'
   import * as bootstrap from 'bootstrap'
   import { onMount } from 'svelte'
   import { Router } from 'svelte-navigator'
 
   import Routes from 'src/components/Routes.svelte'
   import Sidebar from 'src/components/Sidebar.svelte'
-  // import 'src/scss/theme.scss'
+
+  const options = {
+    theme: {
+      '--toastBarHeight': 0,
+    },
+    intro: { x: 192 },
+  }
 
   onMount(() => {
     const tooltipTriggerList = document.querySelectorAll(
@@ -23,9 +30,30 @@
     <Sidebar />
     <Routes />
   </Router>
+  <SvelteToast {options} />
 </main>
 
 <style>
+  :root {
+    --toastBorderRadius: 10px;
+    --toastContainerTop: auto;
+    --toastContainerRight: 40px;
+    --toastContainerBottom: 20px;
+    --toastContainerLeft: auto;
+  }
+  :global(.info) {
+    --toastBackground: #41a3e2;
+  }
+  :global(.success) {
+    --toastBackground: #4caf4f;
+  }
+  :global(.warn) {
+    --toastBackground: #ff9700;
+  }
+  :global(.error) {
+    --toastBackground: #e61b21;
+  }
+
   main {
     display: flex;
     flex-direction: row;

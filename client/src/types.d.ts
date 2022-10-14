@@ -1,8 +1,10 @@
 export interface User extends Friend {
-  friends: User[]
+  friends: FriendsList
 }
 
 export interface Friend {
   username: string
   tag: string
 }
+
+type FriendsList = Friend[]
