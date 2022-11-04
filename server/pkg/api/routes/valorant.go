@@ -6,5 +6,5 @@ import (
 )
 
 func ValorantRoutes(rg *gin.RouterGroup) {
-	rg.GET("/testing", valorant.UserSummary)
+	rg.POST("/summary", valorant.UserSummaryList)
 }

@@ -1,56 +1,86 @@
 package valorant
 
 import (
-	"encoding/json"
-	"fmt"
-	"io"
-	"log"
-	"net/http"
+	"math"
+	"strings"
 
-	constants "github.com/shanesaravia/podium/server/pkg/api/configs"
+	"github.com/shanesaravia/podium/server/pkg/api/clients/valorant"
 )
 
-type cardData struct {
-	Id    string `json:"id"`
-	Small string `json:"small"`
-	Large string `json:"large"`
-	Wide  string `json:"wide"`
+type MMRData struct {
+	Rank       string
+	RankRating uint8
+	RR         uint8
+	EloChange  int32
 }
 
-type userData struct {
-	Puuid           string   `json:"puuid"`
-	Region          string   `json:"region"`
-	Account_level   uint32   `json:"account_level"`
-	Name            string   `json:"name"`
-	Tag             string   `json:"tag"`
-	Last_update     string   `json:"last_update"`
-	Last_update_raw uint32   `json:"last_update_raw"`
-	Card            cardData `json:"card"`
+type PlayerData struct {
+	AverageScore          uint32
+	AverageDamagePerMatch uint32
+	HeadshotPercentage    float32
+	KillDeathRatio        float32
+	KillDeathAssistRatio  float32
 }
 
-type userResponse struct {
-	Status uint16   `json:"status"`
-	Data   userData `json:"data"`
+func GetUserProfile(username string, tag string) valorant.AccountData {
+	accountData := valorant.GetAccount(username, tag)
+	return accountData.Data
 }
 
-func GetUserProfile(username string, tag string) userResponse {
-	url := fmt.Sprintf(constants.Hendrick, username, tag)
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
+func GetUserMMR(username string, tag string) MMRData {
+	mmrHistory := valorant.GetMMRHistory(username, tag)
+	currentData := mmrHistory.Data[0]
+	oldestData := mmrHistory.Data[len(mmrHistory.Data)-1]
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalln(err)
+	mmrData := MMRData{
+		Rank:       currentData.Rank,
+		RankRating: currentData.RankRating,
+		RR:         currentData.RR,
+		EloChange:  currentData.Elo - oldestData.Elo,
+	}
+	return mmrData
+}
+
+func GetUserMatches(username string, tag string) PlayerData {
+	matchHistory := valorant.GetMatchHistory(username, tag)
+
+	var score uint32
+	var damage uint32
+	var headshotPercentage float32
+	var killsDeaths float32
+	var killsDeathsAssists float32
+
+	for _, match := range matchHistory.Data {
+		allPlayers := match.Players.AllPlayers
+		for _, player := range allPlayers {
+			if strings.EqualFold(player.Name, username) && strings.EqualFold(player.Tag, tag) {
+				score += player.Stats.Score
+				damage += player.Damage
+				totalShots := player.Stats.Headshots + player.Stats.Bodyshots + player.Stats.Legshots
+				hsPercent := float32(player.Stats.Headshots) / float32(totalShots) * 100
+				headshotPercentage += hsPercent
+				kd := float32(player.Stats.Kills) / float32(player.Stats.Deaths)
+				killsDeaths += kd
+				kda := float32(player.Stats.Kills+player.Stats.Assists) / float32(player.Stats.Deaths)
+				killsDeathsAssists += kda
+				break
+			}
+		}
 	}
 
-	data := userResponse{}
-	jsonErr := json.Unmarshal(body, &data)
-	if jsonErr != nil {
-		log.Fatalln(jsonErr)
+	matchHistoryLength := len(matchHistory.Data)
+
+	player := PlayerData{
+		AverageScore:          score / uint32(matchHistoryLength),
+		AverageDamagePerMatch: damage / uint32(matchHistoryLength),
+		HeadshotPercentage:    round(headshotPercentage / float32(matchHistoryLength)),
+		KillDeathRatio:        round(killsDeaths / float32(matchHistoryLength)),
+		KillDeathAssistRatio:  round(killsDeathsAssists / float32(matchHistoryLength)),
 	}
 
-	return data
+	return player
+}
+
+func round(value float32) float32 {
+	return float32(math.Round(float64(value*100)) / 100)
 }
