@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query'
   import { SvelteToast } from '@zerodevx/svelte-toast'
   import * as bootstrap from 'bootstrap'
   import { onMount } from 'svelte'
@@ -6,6 +7,8 @@
 
   import Routes from 'src/components/Routes.svelte'
   import Sidebar from 'src/components/Sidebar.svelte'
+
+  const queryClient = new QueryClient()
 
   const options = {
     theme: {
@@ -26,11 +29,13 @@
 </script>
 
 <main>
-  <Router>
-    <Sidebar />
-    <Routes />
-  </Router>
-  <SvelteToast {options} />
+  <QueryClientProvider client={queryClient}>
+    <Router>
+      <Sidebar />
+      <Routes />
+    </Router>
+    <SvelteToast {options} />
+  </QueryClientProvider>
 </main>
 
 <style>

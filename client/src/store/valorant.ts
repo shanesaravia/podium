@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store'
 
+import type { UserStats } from 'src/services/api/valorant/stats'
 import type { User } from 'src/types'
 
 const storeKey = 'valorant'
@@ -13,3 +14,5 @@ export const valorantStore = writable<User>(JSON.parse(stored) || {})
 valorantStore.subscribe(value =>
   localStorage.setItem(storeKey, JSON.stringify(value))
 )
+
+export const valorantPodium = writable<UserStats[]>([])

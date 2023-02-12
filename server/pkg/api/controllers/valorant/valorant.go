@@ -69,13 +69,16 @@ func GetUserMatches(username string, tag string) PlayerData {
 	}
 
 	matchHistoryLength := len(matchHistory.Data)
+	player := PlayerData{}
 
-	player := PlayerData{
-		AverageScore:          score / uint32(matchHistoryLength),
-		AverageDamagePerMatch: damage / uint32(matchHistoryLength),
-		HeadshotPercentage:    round(headshotPercentage / float32(matchHistoryLength)),
-		KillDeathRatio:        round(killsDeaths / float32(matchHistoryLength)),
-		KillDeathAssistRatio:  round(killsDeathsAssists / float32(matchHistoryLength)),
+	if matchHistoryLength > 0 {
+		player = PlayerData{
+			AverageScore:          score / uint32(matchHistoryLength),
+			AverageDamagePerMatch: damage / uint32(matchHistoryLength),
+			HeadshotPercentage:    round(headshotPercentage / float32(matchHistoryLength)),
+			KillDeathRatio:        round(killsDeaths / float32(matchHistoryLength)),
+			KillDeathAssistRatio:  round(killsDeathsAssists / float32(matchHistoryLength)),
+		}
 	}
 
 	return player

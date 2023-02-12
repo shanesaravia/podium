@@ -7,4 +7,9 @@ export interface Friend {
   tag: string
 }
 
+export interface Player {
+  username: string
+  tag: string
+}
+
 type FriendsList = Friend[]
