@@ -1,4 +1,5 @@
-import { useQuery, UseQueryOptions } from '@sveltestack/svelte-query'
+import { useMutation } from '@sveltestack/svelte-query'
+// import type { Writable } from 'svelte/store'
 
 import { apiUrls } from 'src/constants'
 
@@ -7,9 +8,9 @@ interface User {
   tag: string
 }
 
-interface StoreData extends User {
-  friends: User[]
-}
+// interface StoreData extends User {
+//   friends: User[]
+// }
 
 export interface UserStats {
   [key: User['username']]: {
@@ -40,8 +41,13 @@ interface Summary {
   username: string
 }
 
-const GET_STATS_KEY = 'GET_STATS'
-export const getStats = async (userList: User[]) => {
+interface GetStatsParams {
+  userList: User[]
+}
+
+// const GET_STATS_KEY = 'GET_STATS'
+export const getStats = async ({ userList }: GetStatsParams) => {
+  console.log('userList here', userList)
   const response = await fetch(`${apiUrls.baseUrl}${apiUrls.valorantStats}`, {
     method: 'POST',
     body: JSON.stringify(userList),
@@ -55,18 +61,17 @@ export const getStats = async (userList: User[]) => {
   // return await response.json()
 }
 
-export const useAPIGetStats = (
-  storeData: StoreData,
-  options?: UseQueryOptions<User[], Error, UserStats[]>
-) => {
-  const { username, tag, friends } = storeData
-  const allUsers = [{ username, tag }, ...friends]
+export const useAPIGetStats = () => {
+  console.log('useApiGetStats running!!!!')
+  // const { username, tag, friends } = storeData
+  // const allUsers = [{ username, tag }, ...friends]
 
-  return useQuery<User[], Error, UserStats[]>(
-    GET_STATS_KEY,
-    () => getStats(allUsers),
-    { ...options, refetchOnWindowFocus: false }
-  )
+  return useMutation<UserStats[], Error, any>(args => getStats({ ...args }))
+  // return useQuery<User[], Error, UserStats[]>(
+  //   allUsers.join('-'), // Query Key
+  //   () => getStats(allUsers),
+  //   { ...options, refetchOnWindowFocus: false }
+  // )
 }
 
 // export const useData = async (id: string) => {

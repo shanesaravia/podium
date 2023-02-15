@@ -1,0 +1,5 @@
+BE:
+    ☐ API calls are sometimes not returning all the correct results. API rate limits maybe? Add an algorithm for optimal api calls.
+FE:
+    ☐ Add api call when adding a user to see if they exist. Or maybe from the BE just return a failed response that the FE can undo any changes if they add a user that doesn't exist.
+    ☐ Add FE into some kind of nice table.

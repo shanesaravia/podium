@@ -1,10 +1,8 @@
 <script lang="ts">
-  // import { onMount } from 'svelte'
-
   import Loading from 'src/components/Loading.svelte'
   import type { UserStats } from 'src/services/api/valorant/stats'
-  import { useAPIGetStats, getStats } from 'src/services/api/valorant/stats'
-  import { valorantStore, valorantPodium } from 'src/store/valorant'
+  import { useAPIGetStats } from 'src/services/api/valorant/stats'
+  import { valorantStore, valorantPodium, prevCount } from 'src/store/valorant'
   import type { Friend } from 'src/types'
 
   type Stat =
@@ -16,43 +14,41 @@
     | 'killDeathRatio'
     | 'rankRating'
 
-  // onMount(async () => {
-  //   const allUsers = getAllUsers()
-  //   const stats = await getStats(allUsers)
-  //   console.log('stats: ', stats)
-  //   // const res = await fetch(`/tutorial/api/album`)
-  //   // photos = await res.json()
-  // })
+  const getStatsQuery = useAPIGetStats()
+  $: ({ isLoading, isError } = $getStatsQuery)
+  $: console.log('podium: ', $valorantPodium)
 
-  // const getAllUsers = () => {
-  //   const { username, tag, friends } = $valorantStore
-  //   return [{ username, tag }, ...friends]
-  // }
-
-  const queryResult = useAPIGetStats($valorantStore)
-  $: ({ data, isLoading, error } = $queryResult)
-  $: console.log('query data: ', data)
-  $: console.log('query loading: ', isLoading)
+  const getUserList = () => {
+    const { username, tag, friends } = $valorantStore
+    if (username && tag) {
+      return [{ username, tag }, ...friends]
+    } else {
+      return [...friends]
+    }
+  }
 
   // Any time the store changes it will run this code. If we added a user (current count is higher than previous count)
-  valorantStore.subscribe(async user => {
-    console.log('RUNNINGGGGGGG: ')
-    const { username, tag, friends } = user
-    const allUsers = [{ username, tag }, ...friends]
-    // const currentUsers = getAllUsers()
-    // calculatePodium(stats, 'averageScore')
+  valorantStore.subscribe(() => {
+    const userList = getUserList()
+    if ($prevCount > userList.length) {
+      prevCount.set(userList.length)
+      return calculatePodium($valorantPodium, 'rankRating')
+    }
 
-    // return user
-    // if (currentUsers.length > allUsers.length) {
-    const stats = await getStats(allUsers)
-    await calculatePodium(stats, 'averageScore')
-    // }
+    $getStatsQuery.mutate(
+      { userList },
+      {
+        onSuccess: stats => {
+          calculatePodium(stats, 'rankRating')
+        },
+        onError: () => console.log('failure'),
+      }
+    )
+    prevCount.set(userList.length)
   })
 
   const calculatePodium = (playerData: UserStats[], stat: Stat) => {
-    //   // valorantPodium.set(['test'])
-    console.log('order podium stat: ', stat)
-    //   console.log('apiData: ', apiData)
+    if (!playerData) return []
     let sortedData = playerData.length ? [...playerData] : []
     sortedData.sort(
       (a, b) =>
@@ -63,23 +59,36 @@
     console.log('valorant podium: ', $valorantPodium)
     return sortedData
   }
-  // console.log('valorant podium: ', $valorantPodium)
-  // // data.sort((a, b) => a.value - b.value);
 
-  // let podiumData
-  // if (data) {
-  //   console.log('data here: ', data)
-  //   podiumData = calculatePodium(data, 'averageScore')
-  //   console.log('podiumData: ', podiumData)
-  // }
-  // console.log('podiumData: ', podiumData)
+  const updatePodium = ({
+    username,
+    tag,
+  }: {
+    username: string
+    tag: string
+  }) => {
+    valorantPodium.update(data => ({
+      ...data.filter(
+        player =>
+          !player[username.toLowerCase()] ||
+          !(
+            player?.[username]?.summary?.username.toLowerCase() ===
+              username.toLowerCase() &&
+            player?.[username]?.summary?.tag.toLowerCase() === tag.toLowerCase()
+          )
+      ),
+    }))
+  }
 
   const handleRemoveUser = () => {
+    const username = $valorantStore.username
+    const tag = $valorantStore.tag
     valorantStore.update(data => ({
       ...data,
       username: undefined,
       tag: undefined,
     }))
+    updatePodium({ username, tag })
   }
 
   const handleRemoveFriend = ({ username, tag }: Friend) => {
@@ -89,12 +98,13 @@
         friend => !(friend.username === username && friend.tag === tag)
       ),
     }))
+    updatePodium({ username, tag })
   }
 </script>
 
-{#if isLoading || !data}
+{#if isLoading}
   <Loading />
-{:else if error}
+{:else if isError}
   <span>Error</span>
 {:else}
   {#if $valorantStore?.username && $valorantStore?.tag}

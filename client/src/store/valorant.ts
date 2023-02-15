@@ -16,3 +16,5 @@ valorantStore.subscribe(value =>
 )
 
 export const valorantPodium = writable<UserStats[]>([])
+
+export const prevCount = writable<number>(0)
