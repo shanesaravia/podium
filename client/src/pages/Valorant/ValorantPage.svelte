@@ -11,8 +11,10 @@
 
 <style lang="scss">
   .container {
+    display: flex;
     flex-direction: column;
-    width: 100%;
+    width: calc(100% - 80px);
+    padding: 0;
   }
   .heading-container {
     display: flex;

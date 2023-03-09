@@ -1,6 +1,6 @@
 <script lang="ts">
   import { valorantStore } from 'src/store/valorant'
-  import type { FriendsList } from 'src/types'
+  import type { Player } from 'src/types'
   import {
     duplicateToast,
     emptyFieldToast,
@@ -12,7 +12,7 @@
   let username: string
   let tag: string
 
-  const existsInFriends = (friends: FriendsList) => {
+  const existsInFriends = (friends: Player[]) => {
     return friends.find(
       friend => friend.username === username && friend.tag === tag
     )
@@ -122,7 +122,6 @@
     color: $dark;
   }
   .game-input-container {
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

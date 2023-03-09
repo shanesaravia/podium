@@ -3,7 +3,6 @@ package valorant
 import (
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -46,7 +45,7 @@ type User struct {
 	Tag      string `json:"tag"`
 }
 
-func (u *User) getSummary() UserSummaryResponse {
+func (u *User) getSummary() UserSummary {
 	profileData := valorant.GetUserProfile(u.Username, u.Tag)
 	mmrData := valorant.GetUserMMR(u.Username, u.Tag)
 	matchData := valorant.GetUserMatches(u.Username, u.Tag)
@@ -75,12 +74,13 @@ func (u *User) getSummary() UserSummaryResponse {
 		},
 	}
 
-	return UserSummaryResponse{strings.ToLower(profileData.Name): userSummary}
+	return userSummary
+	// return UserSummaryResponse{strings.ToLower(profileData.Name): userSummary}
 }
 
 func UserSummaryList(c *gin.Context) {
 	var requestBody []User
-	var response []UserSummaryResponse
+	var response []UserSummary
 	c.BindJSON(&requestBody)
 	for _, user := range requestBody {
 		appendSummary(user, &response)
@@ -89,7 +89,7 @@ func UserSummaryList(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func appendSummary(user User, response *[]UserSummaryResponse) {
+func appendSummary(user User, response *[]UserSummary) {
 	defer recovery()
 	summary := user.getSummary()
 	*response = append(*response, summary)

@@ -58,6 +58,9 @@ func GetUserMatches(username string, tag string) PlayerData {
 				damage += player.Damage
 				totalShots := player.Stats.Headshots + player.Stats.Bodyshots + player.Stats.Legshots
 				hsPercent := float32(player.Stats.Headshots) / float32(totalShots) * 100
+				if math.IsNaN(float64(hsPercent)) {
+					hsPercent = float32(0)
+				}
 				headshotPercentage += hsPercent
 				kd := float32(player.Stats.Kills) / float32(player.Stats.Deaths)
 				killsDeaths += kd
@@ -67,7 +70,6 @@ func GetUserMatches(username string, tag string) PlayerData {
 			}
 		}
 	}
-
 	matchHistoryLength := len(matchHistory.Data)
 	player := PlayerData{}
 

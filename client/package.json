@@ -43,6 +43,7 @@
     "jquery": "^3.6.1",
     "sirv-cli": "^2.0.0",
     "svelte-material-ui": "^6.2.0",
-    "svelte-navigator": "^3.2.2"
+    "svelte-navigator": "^3.2.2",
+    "svelte-tooltip": "^1.2.0"
   }
 }
