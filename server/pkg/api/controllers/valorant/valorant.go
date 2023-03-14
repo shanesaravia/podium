@@ -1,7 +1,9 @@
 package valorant
 
 import (
+	"errors"
 	"math"
+	"net/http"
 	"strings"
 
 	"github.com/shanesaravia/podium/server/pkg/api/clients/valorant"
@@ -22,9 +24,12 @@ type PlayerData struct {
 	KillDeathAssistRatio  float32
 }
 
-func GetUserProfile(username string, tag string) valorant.AccountData {
+func GetUserProfile(username string, tag string) (valorant.AccountApiResponse, error) {
 	accountData := valorant.GetAccount(username, tag)
-	return accountData.Data
+	if accountData.Status != http.StatusOK {
+		return accountData, errors.New("Unable to fetch user profile")
+	}
+	return accountData, nil
 }
 
 func GetUserMMR(username string, tag string) MMRData {
@@ -58,6 +63,9 @@ func GetUserMatches(username string, tag string) PlayerData {
 				damage += player.Damage
 				totalShots := player.Stats.Headshots + player.Stats.Bodyshots + player.Stats.Legshots
 				hsPercent := float32(player.Stats.Headshots) / float32(totalShots) * 100
+				if math.IsNaN(float64(hsPercent)) {
+					hsPercent = float32(0)
+				}
 				headshotPercentage += hsPercent
 				kd := float32(player.Stats.Kills) / float32(player.Stats.Deaths)
 				killsDeaths += kd
@@ -67,15 +75,17 @@ func GetUserMatches(username string, tag string) PlayerData {
 			}
 		}
 	}
-
 	matchHistoryLength := len(matchHistory.Data)
+	player := PlayerData{}
 
-	player := PlayerData{
-		AverageScore:          score / uint32(matchHistoryLength),
-		AverageDamagePerMatch: damage / uint32(matchHistoryLength),
-		HeadshotPercentage:    round(headshotPercentage / float32(matchHistoryLength)),
-		KillDeathRatio:        round(killsDeaths / float32(matchHistoryLength)),
-		KillDeathAssistRatio:  round(killsDeathsAssists / float32(matchHistoryLength)),
+	if matchHistoryLength > 0 {
+		player = PlayerData{
+			AverageScore:          score / uint32(matchHistoryLength),
+			AverageDamagePerMatch: damage / uint32(matchHistoryLength),
+			HeadshotPercentage:    round(headshotPercentage / float32(matchHistoryLength)),
+			KillDeathRatio:        round(killsDeaths / float32(matchHistoryLength)),
+			KillDeathAssistRatio:  round(killsDeathsAssists / float32(matchHistoryLength)),
+		}
 	}
 
 	return player

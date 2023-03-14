@@ -1,18 +1,20 @@
 <script lang="ts">
   import { valorantStore } from 'src/store/valorant'
-  import type { FriendsList } from 'src/types'
+  import type { Player } from 'src/types'
   import {
     duplicateToast,
     emptyFieldToast,
     errorToast,
     limitToast,
     successToast,
+    unableToFetchUserToast,
   } from 'src/utils/toast'
 
   let username: string
   let tag: string
+  export let getProfileQuery
 
-  const existsInFriends = (friends: FriendsList) => {
+  const existsInFriends = (friends: Player[]) => {
     return friends.find(
       friend => friend.username === username && friend.tag === tag
     )
@@ -23,7 +25,7 @@
     tag = ''
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
       if (!(username && tag)) {
         emptyFieldToast()
@@ -34,17 +36,29 @@
         duplicateToast()
         return
       }
+      await $getProfileQuery.mutateAsync(
+        { username, tag },
+        {
+          onError: () => {
+            unableToFetchUserToast()
+            return
+          },
+        }
+      )
 
       successToast()
       valorantStore.update(data => ({ ...data, username, tag }))
       clearInputFields()
     } catch (error) {
+      if (error.name == 'FetchUserException') {
+        return
+      }
       errorToast()
       console.error(error.message)
     }
   }
 
-  const handleAddFriend = () => {
+  const handleAddFriend = async () => {
     try {
       if (!(username && tag)) {
         emptyFieldToast()
@@ -60,6 +74,15 @@
         duplicateToast()
         return
       }
+      await $getProfileQuery.mutateAsync(
+        { username, tag },
+        {
+          onError: () => {
+            unableToFetchUserToast()
+            return
+          },
+        }
+      )
 
       valorantStore.update(data => {
         successToast()
@@ -69,6 +92,9 @@
       })
       clearInputFields()
     } catch (error) {
+      if (error.name == 'FetchUserException') {
+        return
+      }
       errorToast()
       console.error(error.message)
     }
@@ -122,7 +148,6 @@
     color: $dark;
   }
   .game-input-container {
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

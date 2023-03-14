@@ -1,10 +1,8 @@
-export interface User extends Friend {
-  friends: FriendsList
+export interface User extends Player {
+  friends: Player[]
 }
 
-export interface Friend {
+export interface Player {
   username: string
   tag: string
 }
-
-type FriendsList = Friend[]

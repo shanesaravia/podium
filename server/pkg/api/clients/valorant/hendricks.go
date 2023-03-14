@@ -1,16 +1,21 @@
+//go:build go1.18
+// +build go1.18
+
 package valorant
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/shanesaravia/podium/server/pkg/api/configs/valorant"
 	"gitlab.com/tymonx/go-formatter/formatter"
 )
 
 type AccountApiResponse struct {
-	Status uint16      `json:"status"`
+	Status int         `json:"status"`
 	Data   AccountData `json:"data"`
 }
 
@@ -77,10 +82,16 @@ func GetAccount(username string, tag string) AccountApiResponse {
 	if err != nil {
 		panic(err)
 	}
-	resp, err := http.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+
+	resp, err := retryableHTTPRequest(3, 1, req)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	defer resp.Body.Close()
 
 	userApiResponse := AccountApiResponse{}
@@ -101,9 +112,14 @@ func GetMMRHistory(username string, tag string) MMRApiResponse {
 	if err != nil {
 		panic(err)
 	}
-	resp, err := http.Get(url)
+
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+	resp, err := retryableHTTPRequest(3, 1, req)
+	if err != nil {
+		log.Fatalln(err)
 	}
 	defer resp.Body.Close()
 
@@ -112,7 +128,6 @@ func GetMMRHistory(username string, tag string) MMRApiResponse {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	return mmrApiResponse
 }
 
@@ -121,10 +136,17 @@ func GetMatchHistory(username string, tag string) MatchesApiResponse {
 		"username": username,
 		"tag":      tag,
 	})
-	resp, err := http.Get(url)
+
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+
+	resp, err := retryableHTTPRequest(3, 1, req)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	defer resp.Body.Close()
 
 	matchesApiResponse := MatchesApiResponse{}
@@ -134,4 +156,23 @@ func GetMatchHistory(username string, tag string) MatchesApiResponse {
 	}
 
 	return matchesApiResponse
+}
+
+func retryableHTTPRequest(retries uint8, sleep time.Duration, req *http.Request) (*http.Response, error) {
+	var resp *http.Response
+	var err error
+	for retries > 0 {
+		resp, err = http.DefaultClient.Do(req)
+		if err != nil {
+			return nil, err
+		}
+		if resp.StatusCode == 429 {
+			fmt.Printf("Received 429 status code. Retrying in %d second(s). %d retries left\n", sleep, retries)
+			time.Sleep(sleep * time.Second)
+			retries--
+		} else {
+			break
+		}
+	}
+	return resp, err
 }

@@ -105,6 +105,7 @@ export default {
       inlineSources: !production,
       noUnusedLocals: false,
       noUnusedParameters: false,
+      // compilerOptions: {types: ["svelte"]}
     }),
 
     // In dev mode, call `npm run start` once

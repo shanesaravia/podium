@@ -7,4 +7,5 @@ import (
 
 func ValorantRoutes(rg *gin.RouterGroup) {
 	rg.POST("/summary", valorant.UserSummaryList)
+	rg.POST("/profile", valorant.UserProfile)
 }
