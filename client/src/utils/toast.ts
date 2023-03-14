@@ -16,3 +16,6 @@ export const emptyFieldToast = () =>
 
 export const limitToast = () =>
   toast.push("You've exceeded the limit", { classes: ['warn'] })
+
+export const unableToFetchUserToast = () =>
+  toast.push('Unable to fetch user profile', { classes: ['error'] })

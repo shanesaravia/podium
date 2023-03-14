@@ -1,7 +1,9 @@
 package valorant
 
 import (
+	"errors"
 	"math"
+	"net/http"
 	"strings"
 
 	"github.com/shanesaravia/podium/server/pkg/api/clients/valorant"
@@ -22,9 +24,12 @@ type PlayerData struct {
 	KillDeathAssistRatio  float32
 }
 
-func GetUserProfile(username string, tag string) valorant.AccountData {
+func GetUserProfile(username string, tag string) (valorant.AccountApiResponse, error) {
 	accountData := valorant.GetAccount(username, tag)
-	return accountData.Data
+	if accountData.Status != http.StatusOK {
+		return accountData, errors.New("Unable to fetch user profile")
+	}
+	return accountData, nil
 }
 
 func GetUserMMR(username string, tag string) MMRData {

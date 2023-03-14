@@ -7,10 +7,12 @@
     errorToast,
     limitToast,
     successToast,
+    unableToFetchUserToast,
   } from 'src/utils/toast'
 
   let username: string
   let tag: string
+  export let getProfileQuery
 
   const existsInFriends = (friends: Player[]) => {
     return friends.find(
@@ -23,7 +25,7 @@
     tag = ''
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
       if (!(username && tag)) {
         emptyFieldToast()
@@ -34,17 +36,29 @@
         duplicateToast()
         return
       }
+      await $getProfileQuery.mutateAsync(
+        { username, tag },
+        {
+          onError: () => {
+            unableToFetchUserToast()
+            return
+          },
+        }
+      )
 
       successToast()
       valorantStore.update(data => ({ ...data, username, tag }))
       clearInputFields()
     } catch (error) {
+      if (error.name == 'FetchUserException') {
+        return
+      }
       errorToast()
       console.error(error.message)
     }
   }
 
-  const handleAddFriend = () => {
+  const handleAddFriend = async () => {
     try {
       if (!(username && tag)) {
         emptyFieldToast()
@@ -60,6 +74,15 @@
         duplicateToast()
         return
       }
+      await $getProfileQuery.mutateAsync(
+        { username, tag },
+        {
+          onError: () => {
+            unableToFetchUserToast()
+            return
+          },
+        }
+      )
 
       valorantStore.update(data => {
         successToast()
@@ -69,6 +92,9 @@
       })
       clearInputFields()
     } catch (error) {
+      if (error.name == 'FetchUserException') {
+        return
+      }
       errorToast()
       console.error(error.message)
     }

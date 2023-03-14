@@ -7,4 +7,5 @@ export const urls = {
 export const apiUrls = {
   baseUrl: 'http://localhost:8000/api/v1/',
   valorantStats: 'valorant/summary',
+  valorantProfile: 'valorant/profile',
 }

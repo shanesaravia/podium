@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 
-import { DEFAULT_STAT } from 'src/pages/Valorant/components/UserList.svelte'
+import { DEFAULT_STAT } from 'src/pages/Valorant/components/PlayerTable.svelte'
 import type { UserStats, Stats } from 'src/services/api/valorant/stats'
 import type { User } from 'src/types'
 

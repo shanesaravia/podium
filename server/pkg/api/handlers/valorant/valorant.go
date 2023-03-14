@@ -46,7 +46,11 @@ type User struct {
 }
 
 func (u *User) getSummary() UserSummary {
-	profileData := valorant.GetUserProfile(u.Username, u.Tag)
+	profileResp, err := valorant.GetUserProfile(u.Username, u.Tag)
+	if err != nil {
+		log.Print(err)
+	}
+	profileData := profileResp.Data
 	mmrData := valorant.GetUserMMR(u.Username, u.Tag)
 	matchData := valorant.GetUserMatches(u.Username, u.Tag)
 
@@ -75,7 +79,18 @@ func (u *User) getSummary() UserSummary {
 	}
 
 	return userSummary
-	// return UserSummaryResponse{strings.ToLower(profileData.Name): userSummary}
+}
+
+func UserProfile(c *gin.Context) {
+	var requestBody User
+	var success bool = true
+	c.BindJSON(&requestBody)
+	profileData, err := valorant.GetUserProfile(requestBody.Username, requestBody.Tag)
+	if err != nil {
+		log.Print(err)
+		success = false
+	}
+	c.JSON(profileData.Status, success)
 }
 
 func UserSummaryList(c *gin.Context) {
